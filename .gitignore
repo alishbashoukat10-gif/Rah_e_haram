@@ -1,0 +1,20 @@
+# Flutter
+.dart_tool/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+
+# Backend (Node ho to)
+node_modules/
+
+# Secrets
+.env
+*.env
+
+# Android/iOS local files
+local.properties
+*.iml
+.idea/
