@@ -44,9 +44,10 @@ class _LoginScreenState extends State<LoginScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login Successful!'), backgroundColor: Colors.green),
         );
+        String userName = data['user']['name'] ?? 'User';
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => HomeScreen(userName: userName)),
         );
       } else {
         if (!mounted) return;

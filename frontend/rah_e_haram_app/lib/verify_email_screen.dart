@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 class VerifyEmailScreen extends StatelessWidget {
@@ -7,7 +8,7 @@ class VerifyEmailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color primaryGreen = const Color(0xFF063D34); 
     final Color inputBgColor = const Color(0xFFE6F0EB); 
-    final Color accentGold = const Color(0xFFD4B07A); // Golden Color
+    final Color accentGold = const Color(0xFFD4B07A); 
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -22,6 +23,7 @@ class VerifyEmailScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              const SizedBox(height: 20),
               CircleAvatar(
                 radius: 40,
                 backgroundColor: inputBgColor,
@@ -30,7 +32,7 @@ class VerifyEmailScreen extends StatelessWidget {
               const SizedBox(height: 20),
               Text(
                 'Verify Your Email',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: primaryGreen),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: primaryGreen),
               ),
               const SizedBox(height: 10),
               const Text(
@@ -42,7 +44,7 @@ class VerifyEmailScreen extends StatelessWidget {
 
               const Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Enter Verification Code', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                child: Text('Enter Verification Code', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF063D34))),
               ),
               const SizedBox(height: 20),
 
@@ -64,7 +66,10 @@ class VerifyEmailScreen extends StatelessWidget {
                 height: 55,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Verify logic baad mein
+                    // TODO: Verify logic yahan aayega
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Verification logic coming soon!')),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryGreen,
@@ -82,7 +87,10 @@ class VerifyEmailScreen extends StatelessWidget {
                   const Text("Didn't receive the code? ", style: TextStyle(color: Colors.black54, fontSize: 12)),
                   GestureDetector(
                     onTap: () {
-                      // Resend logic
+                      // TODO: Resend logic yahan aayega
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Code resent successfully!')),
+                      );
                     },
                     child: Text('Resend Code', style: TextStyle(color: accentGold, fontWeight: FontWeight.bold, fontSize: 12)),
                   ),

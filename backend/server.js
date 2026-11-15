@@ -4,7 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
-
+const reviewRoutes = require('./routes/reviewRoutes');
 // ✅ 1. Yahan Agency routes import karein (Naam bilkul agencyRoutes.js jaisa ho)
 const agencyRoutes = require('./routes/agencyRoutes'); 
 
@@ -17,7 +17,7 @@ app.use('/api/auth', authRoutes);
 
 // ✅ 2. Yahan Agency routes ko use karein
 app.use('/api/agencies', agencyRoutes); 
-
+app.use('/api/reviews', reviewRoutes);
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/rah_e_haram')
   .then(() => console.log('✅ MongoDB Connected'))
   .catch((err) => console.log('❌ MongoDB Error:', err));
