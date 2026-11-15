@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+
 import 'agencies_screen.dart';
 import 'packages_screen.dart';
 import 'my_trips_screen.dart';
@@ -7,7 +8,12 @@ import 'guidance_screen.dart';
 import 'requirements_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final String userName;
+
+  const HomeScreen({
+    super.key,
+    this.userName = '',
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -38,7 +44,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  // Hajj and Umrah journey cards
   Widget journeyCard({
     required String title,
     required String subtitle,
@@ -123,7 +128,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Quick search chips
   Widget quickSearch(String title) {
     final bool isSelected = selectedQuickSearch == title;
 
@@ -157,7 +161,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Dashboard feature cards
   Widget featureCard(
     String title,
     IconData icon,
@@ -194,16 +197,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final String greetingName = widget.userName.trim();
+
     return Scaffold(
       backgroundColor: const Color(0xFFF7F9F8),
-
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.only(bottom: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 22),
@@ -217,10 +220,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Rahe Haram',
                           style: TextStyle(
                             color: Colors.white,
@@ -228,17 +231,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 7),
+                        const SizedBox(height: 7),
                         Text(
-                          'Assalamu Alaikum!',
-                          style: TextStyle(
+                          greetingName.isEmpty
+                              ? 'Assalamu Alaikum!'
+                              : 'Assalamu Alaikum, $greetingName!',
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        SizedBox(height: 3),
-                        Text(
+                        const SizedBox(height: 3),
+                        const Text(
                           'Your journey, guided with trust.',
                           style: TextStyle(
                             color: Colors.white70,
@@ -270,16 +275,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Search bar
                     TextField(
                       decoration: InputDecoration(
                         hintText: 'Search packages or operators...',
                         prefixIcon: const Icon(
                           Icons.search,
-                          color: green,
-                        ),
-                        suffixIcon: const Icon(
-                          Icons.tune,
                           color: green,
                         ),
                         filled: true,
@@ -293,24 +293,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: Colors.grey.shade200,
                           ),
                         ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: Colors.grey.shade200,
-                          ),
-                        ),
                       ),
                     ),
 
                     const SizedBox(height: 23),
 
-                    // Journey selection
                     const Text(
                       'Choose Your Journey',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF063D34),
+                        color: green,
                       ),
                     ),
 
@@ -336,13 +329,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 22),
 
-                    // Quick searches
                     const Text(
                       'Quick Searches',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF063D34),
+                        color: green,
                       ),
                     ),
 
@@ -362,7 +354,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 22),
 
-                    // Booking status
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -371,7 +362,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF063D34),
+                            color: green,
                           ),
                         ),
                         TextButton(
@@ -396,24 +387,24 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Colors.grey.shade200,
                         ),
                       ),
-                      child: Column(
+                      child: const Column(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.luggage_outlined,
                             color: gold,
                             size: 34,
                           ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'No active bookings',
+                          SizedBox(height: 8),
+                          Text(
+                            'Your bookings',
                             style: TextStyle(
                               color: green,
                               fontWeight: FontWeight.bold,
                               fontSize: 15,
                             ),
                           ),
-                          const SizedBox(height: 5),
-                          const Text(
+                          SizedBox(height: 5),
+                          Text(
                             'Your booking requests and confirmations will appear here.',
                             textAlign: TextAlign.center,
                             style: TextStyle(
@@ -427,13 +418,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 23),
 
-                    // Explore services
                     const Text(
                       'Explore Services',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF063D34),
+                        color: green,
                       ),
                     ),
 
@@ -482,17 +472,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: featureCard(
-                            'Complaints',
-                            Icons.report_problem_outlined,
-                            () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Complaints section will be connected next.',
-                                  ),
-                                ),
-                              );
-                            },
+                            'My Trips',
+                            Icons.flight_takeoff,
+                            () => openScreen(
+                              const MyTripsScreen(),
+                              1,
+                            ),
                           ),
                         ),
                       ],
@@ -505,7 +490,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
 
-      // Bottom navigation
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: green,
@@ -539,8 +523,8 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Bookings',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.smart_toy_outlined),
-            label: 'AI Assistant',
+            icon: Icon(Icons.menu_book_outlined),
+            label: 'Guidance',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),

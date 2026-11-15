@@ -1,8 +1,36 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'login_screen.dart';
+import 'welcome_screen.dart';
 
-class SplashScreen extends StatelessWidget { // StatefulWidget ki jagah StatelessWidget kar diya hai
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    // 3 second baad automatically Welcome screen par jayega
+    // (Baad mein yahan token check laga sakte hain: logged in ho to seedha Home)
+    _timer = Timer(const Duration(seconds:10 ), () {
+      if (!mounted) return;
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,23 +41,23 @@ class SplashScreen extends StatelessWidget { // StatefulWidget ki jagah Stateles
         // 1. Background Image
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/bg_image.jpg'), 
+            image: AssetImage('assets/bg_image.jpg'),
             fit: BoxFit.cover,
           ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Spacer(flex: 2), // Upar se space dene ke liye
-            
+            const Spacer(flex: 2),
+
             // 2. Logo Image (Kaaba with Airplane)
             Image.asset(
               'assets/logo.png',
-              width: 160, 
+              width: 160,
               height: 160,
             ),
             const SizedBox(height: 30),
-            
+
             // 3. App Name "Rahe Haram"
             const Text(
               'Rahe Haram',
@@ -42,7 +70,7 @@ class SplashScreen extends StatelessWidget { // StatefulWidget ki jagah Stateles
               ),
             ),
             const SizedBox(height: 10),
-            
+
             // 4. Divider with Mosque Icon
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -56,7 +84,7 @@ class SplashScreen extends StatelessWidget { // StatefulWidget ki jagah Stateles
               ],
             ),
             const SizedBox(height: 15),
-            
+
             // 5. Tagline
             const Text(
               'your journey,our guidance',
@@ -67,54 +95,20 @@ class SplashScreen extends StatelessWidget { // StatefulWidget ki jagah Stateles
                 letterSpacing: 1.2,
               ),
             ),
-            
-            const Spacer(flex: 2), // Text aur button ke darmiyan space
-            
-            // 6. "Begin your journey" Button
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40.0),
-              child: SizedBox(
-                width: double.infinity,
-                height: 55,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Ab button dabane par hi Login screen par jayega
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const LoginScreen()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFFFE5C2), // Light peach/beige color
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30), // Gol buttons
-                    ),
-                    elevation: 0,
-                  ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Begin your journey',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF063D34), // Dark green text
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      Icon(
-                        Icons.arrow_forward,
-                        color: Color(0xFF063D34),
-                        size: 20,
-                      ),
-                    ],
-                  ),
-                ),
+
+            const Spacer(flex: 2),
+
+            // 6. Loading indicator (button ki jagah)
+            const SizedBox(
+              width: 32,
+              height: 32,
+              child: CircularProgressIndicator(
+                strokeWidth: 3,
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFFE5C2)),
               ),
             ),
-            
-            const SizedBox(height: 50), // Neeche se space
+
+            const SizedBox(height: 60),
           ],
         ),
       ),

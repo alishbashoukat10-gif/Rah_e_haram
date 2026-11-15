@@ -58,7 +58,6 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!mounted) return;
 
       if (response.statusCode == 200) {
-        // Receive JWT token from backend
         final token = data['token'];
 
         if (token == null || token.toString().isEmpty) {
@@ -67,8 +66,14 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         }
 
-        // Save token for authenticated API requests
+        // Save JWT token for authenticated API requests.
         ApiService.setToken(token.toString());
+
+        final userData = data['user'];
+        final String userName =
+            userData is Map && userData['name'] != null
+                ? userData['name'].toString()
+                : 'User';
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -80,7 +85,9 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
+            builder: (context) => HomeScreen(
+              userName: userName,
+            ),
           ),
         );
       } else {
@@ -138,8 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           child: Form(
             key: _formKey,
-            autovalidateMode:
-                AutovalidateMode.onUserInteraction,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -175,8 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _emailController,
-                      keyboardType:
-                          TextInputType.emailAddress,
+                      keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         hintText: 'Enter your email',
                         prefixIcon: const Icon(
@@ -186,12 +191,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         filled: true,
                         fillColor: inputBgColor,
                         border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none,
                         ),
-                        contentPadding:
-                            const EdgeInsets.symmetric(
+                        contentPadding: const EdgeInsets.symmetric(
                           horizontal: 15,
                           vertical: 15,
                         ),
@@ -247,20 +250,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           onPressed: () {
                             setState(() {
-                              _obscurePassword =
-                                  !_obscurePassword;
+                              _obscurePassword = !_obscurePassword;
                             });
                           },
                         ),
                         filled: true,
                         fillColor: inputBgColor,
                         border: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none,
                         ),
-                        contentPadding:
-                            const EdgeInsets.symmetric(
+                        contentPadding: const EdgeInsets.symmetric(
                           horizontal: 15,
                           vertical: 15,
                         ),
@@ -307,22 +307,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: double.infinity,
                   height: 55,
                   child: ElevatedButton(
-                    onPressed:
-                        _isLoading ? null : _handleLogin,
+                    onPressed: _isLoading ? null : _handleLogin,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: primaryGreen,
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                     child: _isLoading
                         ? const SizedBox(
                             height: 24,
                             width: 24,
-                            child:
-                                CircularProgressIndicator(
+                            child: CircularProgressIndicator(
                               color: Colors.white,
                               strokeWidth: 2,
                             ),
@@ -339,17 +336,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 20),
 
-                // Divider
                 const Row(
                   children: [
                     Expanded(child: Divider()),
                     Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 10),
                       child: Text(
                         'Or',
-                        style:
-                            TextStyle(color: Colors.grey),
+                        style: TextStyle(color: Colors.grey),
                       ),
                     ),
                     Expanded(child: Divider()),
@@ -358,14 +352,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 const SizedBox(height: 20),
 
-                // Google Button
+                // Google Button (not connected yet)
                 SizedBox(
                   width: double.infinity,
                   height: 55,
                   child: OutlinedButton(
                     onPressed: () {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
                             'Google Sign-In Coming Soon!',
@@ -375,16 +368,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                     style: OutlinedButton.styleFrom(
                       shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      side:
-                          const BorderSide(color: Colors.grey),
+                      side: const BorderSide(color: Colors.grey),
                     ),
                     child: const Text(
                       'Continue with Google',
-                      style:
-                          TextStyle(color: Colors.black),
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                 ),
@@ -393,19 +383,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 // Sign Up Link
                 Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      "Don't have an account? ",
-                    ),
+                    const Text("Don't have an account? "),
                     GestureDetector(
                       onTap: () {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                const SignUpScreen(),
+                            builder: (context) => const SignUpScreen(),
                           ),
                         );
                       },

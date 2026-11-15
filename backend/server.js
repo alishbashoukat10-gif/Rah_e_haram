@@ -10,6 +10,7 @@ const agencyRoutes = require('./routes/agencyRoutes');
 const packageRoutes = require('./routes/packageRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const customizationRoutes = require('./routes/customizationRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use('/api/agencies', agencyRoutes);
 app.use('/api/packages', packageRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/customizations', customizationRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 // MongoDB connection
 mongoose.connect(
@@ -31,7 +33,7 @@ mongoose.connect(
   .then(() => console.log('✅ MongoDB Connected'))
   .catch((err) => console.log('❌ MongoDB Error:', err));
 
-// Home route
+// Test route
 app.get('/', (req, res) => {
   res.send('Rah e Haram Backend is Running!');
 });
