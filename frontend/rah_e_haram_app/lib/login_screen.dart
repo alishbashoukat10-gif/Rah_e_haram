@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     final url = Uri.parse(
-      'http://localhost:5000/api/auth/login',
+      '${ApiService.baseUrl}/auth/login',
     );
 
     try {
@@ -70,6 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ApiService.setToken(token.toString());
 
         final userData = data['user'];
+
         final String userName =
             userData is Map && userData['name'] != null
                 ? userData['name'].toString()

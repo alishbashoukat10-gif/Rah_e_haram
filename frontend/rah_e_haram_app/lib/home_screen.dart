@@ -6,6 +6,9 @@ import 'packages_screen.dart';
 import 'my_trips_screen.dart';
 import 'guidance_screen.dart';
 import 'requirements_screen.dart';
+import 'customization_screen.dart';
+import 'my_customization_requests_screen.dart';
+import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final String userName;
@@ -42,6 +45,28 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       }
     });
+  }
+
+  void openPackages() {
+    openScreen(const PackagesScreen(), 0);
+  }
+
+  void openRequirements() {
+    openScreen(
+      RequirementsScreen(packageType: selectedJourney),
+      0,
+    );
+  }
+
+  void openCustomization() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Please select a package first to customize your journey.',
+        ),
+      ),
+    );
+    openPackages();
   }
 
   Widget journeyCard({
@@ -136,6 +161,14 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           selectedQuickSearch = title;
         });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '$title selected. Open Packages to explore available options.',
+            ),
+          ),
+        );
       },
       child: Container(
         padding: const EdgeInsets.symmetric(
@@ -166,31 +199,48 @@ class _HomeScreenState extends State<HomeScreen> {
     IconData icon,
     VoidCallback onTap,
   ) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.grey.shade200),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Icon(icon, color: green, size: 27),
-            const SizedBox(height: 10),
-            Text(
-              title,
-              style: const TextStyle(
-                color: green,
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-              ),
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          height: 105,
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: Colors.grey.shade200,
             ),
-          ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: green, size: 27),
+              const SizedBox(height: 10),
+              Text(
+                title,
+                style: const TextStyle(
+                  color: green,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget sectionTitle(String title) {
+    return Text(
+      title,
+      style: const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        color: green,
       ),
     );
   }
@@ -207,6 +257,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Dashboard header
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 22),
@@ -275,12 +326,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Search
                     TextField(
+                      textInputAction: TextInputAction.search,
+                      onSubmitted: (_) => openPackages(),
                       decoration: InputDecoration(
                         hintText: 'Search packages or operators...',
                         prefixIcon: const Icon(
                           Icons.search,
                           color: green,
+                        ),
+                        suffixIcon: IconButton(
+                          onPressed: openPackages,
+                          icon: const Icon(
+                            Icons.arrow_forward,
+                            color: green,
+                          ),
                         ),
                         filled: true,
                         fillColor: Colors.white,
@@ -293,19 +354,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: Colors.grey.shade200,
                           ),
                         ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                            color: Colors.grey.shade200,
+                          ),
+                        ),
                       ),
                     ),
 
                     const SizedBox(height: 23),
 
-                    const Text(
-                      'Choose Your Journey',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: green,
-                      ),
-                    ),
+                    sectionTitle('Choose Your Journey'),
 
                     const SizedBox(height: 12),
 
@@ -329,14 +389,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 22),
 
-                    const Text(
-                      'Quick Searches',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: green,
-                      ),
-                    ),
+                    sectionTitle('Quick Searches'),
 
                     const SizedBox(height: 11),
 
@@ -354,17 +407,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     const SizedBox(height: 22),
 
+                    // My Bookings
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'My Bookings',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: green,
-                          ),
-                        ),
+                        sectionTitle('My Bookings'),
                         TextButton(
                           onPressed: () {
                             openScreen(const MyTripsScreen(), 1);
@@ -377,79 +424,96 @@ class _HomeScreenState extends State<HomeScreen> {
                       ],
                     ),
 
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(17),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(13),
-                        border: Border.all(
-                          color: Colors.grey.shade200,
+                    InkWell(
+                      onTap: () {
+                        openScreen(const MyTripsScreen(), 1);
+                      },
+                      borderRadius: BorderRadius.circular(13),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(17),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(13),
+                          border: Border.all(
+                            color: Colors.grey.shade200,
+                          ),
                         ),
-                      ),
-                      child: const Column(
-                        children: [
-                          Icon(
-                            Icons.luggage_outlined,
-                            color: gold,
-                            size: 34,
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            'Your bookings',
-                            style: TextStyle(
-                              color: green,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
+                        child: const Column(
+                          children: [
+                            Icon(
+                              Icons.luggage_outlined,
+                              color: gold,
+                              size: 34,
                             ),
-                          ),
-                          SizedBox(height: 5),
-                          Text(
-                            'Your booking requests and confirmations will appear here.',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 12,
+                            SizedBox(height: 8),
+                            Text(
+                              'Your bookings',
+                              style: TextStyle(
+                                color: green,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
                             ),
-                          ),
-                        ],
+                            SizedBox(height: 5),
+                            Text(
+                              'View your booking requests and confirmations.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
 
                     const SizedBox(height: 23),
 
-                    const Text(
-                      'Explore Services',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: green,
-                      ),
-                    ),
+                    // Explore Services
+                    sectionTitle('Explore Services'),
 
                     const SizedBox(height: 13),
 
                     Row(
                       children: [
-                        Expanded(
-                          child: featureCard(
-                            'Verified Operators',
-                            Icons.verified_user_outlined,
-                            () => openScreen(
-                              const AgenciesScreen(),
-                              0,
-                            ),
+                        featureCard(
+                          'Verified Operators',
+                          Icons.verified_user_outlined,
+                          () => openScreen(
+                            const AgenciesScreen(),
+                            0,
                           ),
                         ),
                         const SizedBox(width: 12),
-                        Expanded(
-                          child: featureCard(
-                            'Packages',
-                            Icons.card_travel,
-                            () => openScreen(
-                              const PackagesScreen(),
-                              0,
-                            ),
+                        featureCard(
+                          'Packages',
+                          Icons.card_travel,
+                          openPackages,
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    Row(
+                      children: [
+                        featureCard(
+                          'Guidance',
+                          Icons.menu_book_outlined,
+                          () => openScreen(
+                            const GuidanceScreen(),
+                            2,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        featureCard(
+                          'My Trips',
+                          Icons.flight_takeoff,
+                          () => openScreen(
+                            const MyTripsScreen(),
+                            1,
                           ),
                         ),
                       ],
@@ -459,26 +523,35 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     Row(
                       children: [
-                        Expanded(
-                          child: featureCard(
-                            'Guidance',
-                            Icons.menu_book_outlined,
-                            () => openScreen(
-                              const GuidanceScreen(),
-                              2,
-                            ),
-                          ),
+                        featureCard(
+                          'Customize Trip',
+                          Icons.tune,
+                          openCustomization,
                         ),
                         const SizedBox(width: 12),
-                        Expanded(
-                          child: featureCard(
-                            'My Trips',
-                            Icons.flight_takeoff,
-                            () => openScreen(
-                              const MyTripsScreen(),
-                              1,
-                            ),
+                        featureCard(
+                          'My Customization Requests',
+                          Icons.edit_calendar_outlined,
+                          () => openScreen(
+                            const MyCustomizationRequestsScreen(),
+                            0,
                           ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    Row(
+                      children: [
+                        featureCard(
+                          'Find My Package',
+                          Icons.recommend_outlined,
+                          openRequirements,
+                        ),
+                        const SizedBox(width: 12),
+                        const Expanded(
+                          child: SizedBox(height: 105),
                         ),
                       ],
                     ),
@@ -490,6 +563,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
 
+      // Bottom navigation
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: green,
@@ -506,11 +580,7 @@ class _HomeScreenState extends State<HomeScreen> {
           } else if (index == 2) {
             openScreen(const GuidanceScreen(), 2);
           } else if (index == 3) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Profile screen will be connected.'),
-              ),
-            );
+            openScreen(const ProfileScreen(), 3);
           }
         },
         items: const [

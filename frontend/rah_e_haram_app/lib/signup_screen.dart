@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
 import 'login_screen.dart';
+import 'services/api_service.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -122,9 +124,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isLoading = true;
     });
 
-    // Correct backend address
+    // Connect to the laptop backend using ApiService.
     final url = Uri.parse(
-      'http://localhost:5000/api/auth/register',
+      '${ApiService.baseUrl}/auth/register',
     );
 
     try {

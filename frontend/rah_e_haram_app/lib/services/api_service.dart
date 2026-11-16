@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const String baseUrl = 'http://localhost:5000/api';
+  // Laptop backend address for testing on your Android phone
+  static const String baseUrl = 'http://192.168.100.9:5000/api';
 
   static String? authToken;
 
